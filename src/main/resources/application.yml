@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: security
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: create-drop
+    properties.hibernate:
+      default_schema: public
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo
+    username: postgres
+    password: 1234
+
+demo:
+  jwt:
+    access_token_expiration: 15
+    refresh_token_expiration: 1440
+    sign_secret: fa148f13-653e-4270-9100-249e33f8ff88

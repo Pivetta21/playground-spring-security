@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "demo.jwt.access_token_expiration",
+      "type": "java.lang.Long",
+      "description": "Expiration time for the JWT access token in minutes."
+    },
+    {
+      "name": "demo.jwt.refresh_token_expiration",
+      "type": "java.lang.Long",
+      "description": "Expiration time for the JTW refresh token in minutes."
+    },
+    {
+      "name": "demo.jwt.sign_secret",
+      "type": "java.lang.String",
+      "description": "Secret used by the JWT sign algorithm."
+    }
+  ]
+}
