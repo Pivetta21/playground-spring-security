@@ -18,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -28,7 +29,7 @@ import static com.example.demo.security.model.RoleEnum.*;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -77,8 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         var jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtil);
 
         httpSecurity
-                // Enable CORS and disable CSRF
-                .cors().and().csrf().disable()
+                // Enable CORS and enable CSRF
+                .cors().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
 
                 // Set session management to stateless
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -95,9 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/refresh").permitAll()
                 .antMatchers(HttpMethod.GET, "/test").permitAll()
-                .antMatchers(HttpMethod.GET, "/admin").hasRole(ADMIN.name())
-                .antMatchers(HttpMethod.GET, "/staff").hasRole(STAFF.name())
-                .antMatchers(HttpMethod.GET, "/user").hasRole(USER.name())
+                .antMatchers(HttpMethod.GET, "/user/me").hasRole(USER.name())
                 .anyRequest().authenticated();
     }
 
